@@ -1,49 +1,49 @@
-# راهنمای گرفتن SSL واسه ساب‌دومین با Win-ACME (فرمت PEM)[cite: 1]
+# Guide to Obtaining a Subdomain SSL with Win-ACME (PEM Format)[cite: 1]
 
-سلام! اگه می‌خوای واسه ساب‌دومینت یه گواهینامه SSL رایگان (Let's Encrypt) بگیری و فایل‌هاش رو با فرمت `.pem` داشته باشی، این راهنما دقیقا واسه خودته[cite: 1].
+If you want to get a free SSL certificate (Let's Encrypt) for your subdomain and receive the files in `.pem` format, this guide is for you[cite: 1].
 
-## پیش‌نیازها[cite: 1]
-*   برنامه `wacs.exe` رو دانلود کرده باشی[cite: 1].
-*   دسترسی به پنل مدیریت DNS دامنه (مثل کلودفلر یا ایرنیک یا پنل هاستینگت) داشته باشی[cite: 1].
+## Prerequisites[cite: 1]
+*   You must have downloaded the `wacs.exe` application[cite: 1].
+*   You must have access to your domain's DNS management panel (e.g., Cloudflare, your hosting panel, etc.)[cite: 1].
 
-## دستور جادویی تک‌خطی[cite: 1]
-فقط کافیه ترمینال (PowerShell یا CMD) رو در حالت **Run as Administrator** باز کنی و این دستور رو با تغییر دادن مشخصات خودت کپی و پیست کنی[cite: 1]:
+## The Single-Line Command[cite: 1]
+Simply open your terminal (PowerShell or CMD) as an **Administrator** and copy/paste this command, replacing the placeholders with your own details[cite: 1]:
 ```powershell
 wacs.exe --source manual --host sub.yourdomain.com --validation manual --validationmode dns-01 --store pemfiles --pemfilespath "C:\Certificates" --installation none
 ```
 [cite: 1]
 
-### این دستور چیکار می‌کنه؟[cite: 1]
-*   `--host`: اینجا آدرس ساب‌دومینت رو می‌نویسی[cite: 1].
-*   `--validation manual`: یعنی می‌خوام خودم رکورد DNS رو ست کنم[cite: 1].
-*   `--store pemfiles`: فایل‌ها رو با فرمت `.pem` بهت می‌ده (نه توی Certificate Store ویندوز)[cite: 1].
-*   `--pemfilespath`: آدرس فولدری که می‌خوای فایل‌ها اونجا ذخیره بشن[cite: 1].
+### What does this command do?[cite: 1]
+*   `--host`: Enter your subdomain address here[cite: 1].
+*   `--validation manual`: Indicates that you will set the DNS record yourself[cite: 1].
+*   `--store pemfiles`: Provides the files in `.pem` format (instead of the Windows Certificate Store)[cite: 1].
+*   `--pemfilespath`: The folder path where you want the files saved[cite: 1].
 
 ---
 
-## مراحل انجام کار (قدم‌به‌قدم)[cite: 1]
+## Step-by-Step Instructions[cite: 1]
 
-1.  **اجرای دستور:** کد بالا رو بزن. برنامه شروع می‌کنه به کار کردن و وسط راه بهت یه **Host** و یه **Value** می‌ده[cite: 1]. مثلا می‌گه یه رکورد TXT بساز با اسم `_acme-challenge.sub` و مقدار فلان[cite: 1].
+1.  **Run the Command:** Execute the code above[cite: 1]. The program will start and eventually provide you with a **Host** and a **Value**[cite: 1]. For example, it will tell you to create a TXT record with the name `_acme-challenge.sub` and a specific long value[cite: 1].
 
-2.  **ست کردن DNS:**[cite: 1]
-    *   برو توی پنل مدیریت DNS دامنه[cite: 1].
-    *   یه رکورد جدید از نوع **TXT** بساز[cite: 1].
-    *   توی بخش Name یا Host، اون چیزی که برنامه داد (مثلا `_acme-challenge.sub`) رو وارد کن[cite: 1].
-    *   توی بخش Value، اون کد طولانی رو کپی کن و بذار[cite: 1].
-    *   TTL رو بذار روی کمترین مقدار (مثلا ۶۰ ثانیه)[cite: 1].
+2.  **Set the DNS Record:**[cite: 1]
+    *   Go to your domain's DNS management panel[cite: 1].
+    *   Create a new record of type **TXT**[cite: 1].
+    *   In the Name or Host field, enter the name provided by the program (e.g., `_acme-challenge.sub`)[cite: 1].
+    *   In the Value or Text field, paste the long code provided by the program[cite: 1].
+    *   Set the TTL to the lowest possible value (e.g., 60 seconds)[cite: 1].
 
-3.  **صبر و تایید:**[cite: 1]
-    *   یه دقیقه صبر کن تا رکورد توی اینترنت پخش بشه[cite: 1].
-    *   حالا برگرد توی محیط ترمینال و دکمه **Enter** رو بزن[cite: 1].
+3.  **Wait and Confirm:**[cite: 1]
+    *   Wait a minute for the record to propagate across the internet[cite: 1].
+    *   Return to the terminal and press **Enter**[cite: 1].
 
-4.  **تبریک!** اگه همه چی درست باشه، فایل‌های سرتیفیکیت توی مسیری که دادی (مثلا `C:\Certificates`) ظاهر می‌شن[cite: 1].
+4.  **Success:** If everything is correct, the certificate files will appear in your specified directory (e.g., `C:\Certificates`)[cite: 1].
 
-## فایل‌هایی که بهت می‌ده چیه؟[cite: 1]
-توی فولدر خروجی، این فایل‌ها رو می‌بینی:[cite: 1]
-*   `*-crt.pem`: خودِ گواهینامه[cite: 1].
-*   `*-key.pem`: کلید خصوصی (بسیار مهم و محرمانه!)[cite: 1].
-*   `*-chain.pem`: زنجیره گواهینامه[cite: 1].
-*   `*-chain-as-bundle.pem`: ترکیب گواهینامه و زنجیره (معمولا واسه Nginx و Apache این فایل رو استفاده می‌کنیم)[cite: 1].
+## What files are provided?[cite: 1]
+In the output folder, you will see these files:[cite: 1]
+*   `*-crt.pem`: The certificate itself[cite: 1].
+*   `*-key.pem`: The private key (very important and confidential!)[cite: 1].
+*   `*-chain.pem`: The certificate chain[cite: 1].
+*   `*-chain-as-bundle.pem`: A combination of the certificate and the chain (commonly used for Nginx and Apache)[cite: 1].
 
 ---
-**نکته مهم:** چون این روش "دستی" هست، تمدید خودکار (Auto-Renewal) نداره[cite: 1]. یعنی سر ۹۰ روز باید دوباره همین دستور رو بزنی و رکورد جدید رو توی DNS ست کنی[cite: 1].
+**Important Note:** Because this is a "manual" method, it does not support auto-renewal[cite: 1]. You will need to run this command again every 90 days and set a new DNS record[cite: 1].
